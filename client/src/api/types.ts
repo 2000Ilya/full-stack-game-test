@@ -1,4 +1,4 @@
-export type TCSVDataItem = {
+export interface TCSVDataItem {
     Email: string
     Зарегистрирован: string
     Ник: string
