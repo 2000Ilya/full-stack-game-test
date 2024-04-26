@@ -1,19 +1,27 @@
-import axios from 'axios';
+import { useState } from 'react';
 import { Upload } from './components/upload/Upload';
+import { uploadFile } from './api/api';
+import Table from './components/table/Table';
+import { TCSVDataItem } from './api/types';
 
 function App() {
+  const [tableData, setTableData] = useState<TCSVDataItem[]>()
+
   async function onUpload(file: File) {
-    console.log(file);
     const myData = new FormData();
     myData.append('file', file);
-    // await axios.get('http://localhost:3000/data');
-    await axios.post('http://localhost:3000/upload_files', myData);
+    const response = await uploadFile(myData);
+    const tableData = response.data;
+    setTableData(tableData);
   }
 
   return (
     <>
-      {/* <input type={"file"} value={file} onChange={handleChangeFile} /> */}
       <Upload onUpload={onUpload} disabled={false} />
+      {
+        tableData &&
+        <Table tableData={tableData} />
+      }
     </>
   )
 
